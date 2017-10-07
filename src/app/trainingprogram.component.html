@@ -1,0 +1,71 @@
+<div class="trainingprogram-content">
+	<h1 class="page-title">Training Program Schedule</h1>
+	<br/>
+	<div class="trainingprogram-create">
+		<form #trainingprogramForm="ngForm" (ngSubmit) = "createTrainingProgram(trainingprogramForm)">
+			<input type="text" id="traineeName" class="form-control" required placeholder="Enter Trainee Name" name="traineeName" [(ngModel)]="newTrainingProgram.traineeName"
+               #title="ngModel"/>
+			
+			<input type="text" id="skill" class="form-control" placeholder="Enter Skill" required name="skill" [(ngModel)]="newTrainingProgram.skill"
+               #title="ngModel" />
+			
+			<input type="date" id="scheduledDate" class="form-control" required name="scheduledDate" [(ngModel)]="newTrainingProgram.scheduledDate"
+				#title="ngModel" />
+				
+			<select id="statusVal" class="form-control" name="statusVal" [(ngModel)]="newTrainingProgram.statusVal" #title="ngModel">
+				<option value="Pending">Pending </option>
+				<option value="Completed">Completed</option>
+			</select>
+			<br/>
+			<div class="text-center"><button type="submit" class="btn btn-primary btn-sx">Add</button></div>
+			<h5>Sort by Status  &emsp;  <a (click)="sort('statusVal')"> <i class="glyphicon glyphicon-sort"></i> </a></h5>
+		</form>
+	</div>
+	
+	<ul class="container" style="width: 100%;">
+		<li *ngFor="let trainingProgram of trainingPrograms">
+			<div class="row" style="width: 100%" *ngIf="!editing || editingTrainingProgram.id!=trainingProgram.id">
+				<span class="col-sm-3">
+					{{trainingProgram.traineeName}}
+				</span>
+				<span class="col-sm-3">
+					{{trainingProgram.skill}}
+				</span>
+				<span class="col-sm-3">
+					{{trainingProgram.scheduledDate | date : "dd/MM/yyyy"}}
+				</span>
+				<span class="col-sm-2" style="width: 15%">
+					{{trainingProgram.statusVal}}
+				</span>
+				<span class="actions">
+					<a (click)="editTrainingProgram(trainingProgram)" title="Edit Status"> <i class="glyphicon glyphicon-edit"></i> </a>
+					<a (click)="deleteTrainingProgram(trainingProgram.id)"title="Remove Training Program"> <i class="glyphicon glyphicon-remove"></i> </a>
+				</span>
+			</div>
+			
+			<div class="row" style="width: 100%" *ngIf="editing && editingTrainingProgram.id==trainingProgram.id">
+				<span class="col-sm-3">
+					{{trainingProgram.traineeName}}
+				</span>
+				<span class="col-sm-3">
+					{{trainingProgram.skill}}
+				</span>
+				<span class="col-sm-3">
+					{{trainingProgram.scheduledDate | date : "dd/MM/yyyy"}}
+				</span>
+				<span class="col-sm-2">
+				<select class="form-control" [(ngModel)]="editingTrainingProgram.statusVal" required>
+					<option value="Pending">Pending</option>
+					<option value="Completed">Complete</option>
+				</select>
+				</span>
+				<span class="actions">
+					<a (click)="updateTrainingProgram(editingTrainingProgram)" title="Mark as Completed"><i class="glyphicon glyphicon-ok"></i></a>
+				</span>
+			</div>
+		</li>
+	</ul>
+	<div class="no-trainingprograms" *ngIf="trainingPrograms && trainingPrograms.length == 0">
+		<p>No Training Programs Found</p>
+	</div>
+</div>
